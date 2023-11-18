@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://dlr4nrciifgm4"]
+[gd_scene load_steps=8 format=3 uid="uid://dlr4nrciifgm4"]
 
-[ext_resource type="PackedScene" uid="uid://cp67lr8mr7rys" path="res://track 1.tscn" id="1_j4ou1"]
+[ext_resource type="PackedScene" uid="uid://icv5x8xkkgs6" path="res://track.tscn" id="1_wi8fe"]
 [ext_resource type="Script" path="res://ShipControl.gd" id="2_lo1p2"]
 [ext_resource type="Script" path="res://Camera3D.gd" id="3_4rinq"]
 
@@ -14,51 +14,33 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_0ineh")
 size = Vector3(1, 0.5, 2)
 
-[sub_resource type="Gradient" id="Gradient_w8ujl"]
-offsets = PackedFloat32Array(0.00970874, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.0941176, 0.313726, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_qtc35"]
-gradient = SubResource("Gradient_w8ujl")
-width = 258
-height = 258
-fill_from = Vector2(0.5, 1)
-fill_to = Vector2(0.5, 0)
-metadata/_snap_enabled = true
-metadata/_snap_count = 2
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_frr43"]
-panorama = SubResource("GradientTexture2D_qtc35")
-
-[sub_resource type="Sky" id="Sky_5cpot"]
-sky_material = SubResource("PanoramaSkyMaterial_frr43")
-
-[sub_resource type="Environment" id="Environment_c63ko"]
-background_mode = 2
-sky = SubResource("Sky_5cpot")
-glow_enabled = true
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_m6jww"]
 
 [node name="Node3D" type="Node3D"]
 
+[node name="track" parent="." instance=ExtResource("1_wi8fe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0107213, -0.0106401, -0.00846243)
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.916321, 0.175971, -0.359709, 0, 0.898273, 0.439438, 0.400445, -0.402666, 0.823106, -2.63272, 8.20744, 4.90258)
 light_energy = 1.53
-sky_mode = 1
+shadow_enabled = true
+directional_shadow_mode = 1
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." node_paths=PackedStringArray("ray", "currentLine")]
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 0, 1.83011, 1.93498)
 input_ray_pickable = false
 script = ExtResource("2_lo1p2")
-ray = NodePath("CollisionShape3D/RayCast3D")
-currentLine = NodePath("../Path3D")
 acceleration = 2.0
 friction = 0.97
 rAcceleration = 1.2
 rFriction = 0.75
-groundMagnetDist = 2.0
-groundMagnetLerpHeigh = 5.0
+groundMagnet = 0.5
+groundMagnetDist = 2.5
+groundMagnetRotSpeed = 0.8
+groundMagnetHeighSpeed = 0.2
+ray = Object(RayCast3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.228, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"enabled":true,"exclude_parent":true,"target_position":Vector3(0, -10, 0),"collision_mask":1,"hit_from_inside":false,"collide_with_areas":false,"collide_with_bodies":true,"debug_shape_custom_color":Color(0, 0, 0, 1),"debug_shape_thickness":2,"script":null)
+
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_q0203")
@@ -80,7 +62,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.61538e-08, 1.44721, -3.2771
 
 [node name="Camera3D" type="Camera3D" parent="StaticBody3D/Node3D" node_paths=PackedStringArray("target", "targetView")]
 transform = Transform3D(-1, -4.0254e-08, 1.3521e-07, 0, 0.958427, 0.285337, -1.41075e-07, 0.285337, -0.958427, 0, 0, 0)
-environment = SubResource("Environment_c63ko")
 current = true
 fov = 86.3942
 size = 9.0
@@ -89,7 +70,6 @@ far = 836.67
 script = ExtResource("3_4rinq")
 target = NodePath("..")
 targetView = NodePath("../..")
-lerpSpeed = 5.0
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 transform = Transform3D(114.221, 0, 0, 0, 114.221, 0, 0, 0, 114.221, -104.986, -56.9146, 7.04562)
@@ -99,5 +79,3 @@ shape = SubResource("SphereShape3D_m6jww")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="StaticBody3D2/CollisionShape3D"]
 rings = 30
-
-[node name="Path3D" parent="." instance=ExtResource("1_j4ou1")]
