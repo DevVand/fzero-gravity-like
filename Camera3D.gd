@@ -17,8 +17,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var d:float= position.distance_to(target.global_position + offset)
-	var lerpV:float = ( ((1+d*.2))+lerpSpeed ) * delta
-	position = position.lerp(target.global_position + offset,lerpV)
+	var d:float= position.distance_to(target.position + offset)
+	position = position.lerp(target.global_position + offset,lerpSpeed*delta)
 	look_at(targetView.position, targetView.basis.y)
 
