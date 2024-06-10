@@ -1,17 +1,19 @@
 extends StaticBody3D
 
 @export var ray: RayCast3D 
-@export var currentLine: Path3D 
+
+@export var currentLine: Path3D
+@export var currentPath: PathFollow3D 
 
 
 var dir: Vector3
-
-
 
 @export var acceleration: float
 var gVelocity: Vector3
 var velocity: Vector3
 var linearVelocity: float
+
+var lVelocity: float = 10
 @export var friction: float = .95
 
 @export var rAcceleration: float
@@ -26,10 +28,19 @@ var rSpeed: float
 @export var groundMagnetRotSpeed: float = 10
 @export var groundMagnetHeighSpeed: float = 10
 # Called when the node enters the scene tree for the first time.
+var curve:Curve3D
+
 func _ready():
+	#currentPath = get_tree().current_scene.get_node("Path3D/PathFollow3D")
+	#currentLine = get_tree().current_scene.get_node("$../track")
+	
+	curve = currentLine.curve
 	pass # Replace with function body.
 
+
 func _physics_process(delta):
+	
+	
 	pass
 
 		#transform.origin.lerp( (p + transform.basis.y * groundMagnetDist), lerpV ) #* groundMagnetLerp * delta)
@@ -59,6 +70,12 @@ func _process(delta):
 		var rDif: float = 1+abs(basis.y.angle_to(n) )*10
 		var lerpR: float = (rDif *groundMagnetRotSpeed)*delta
 		var lerpV: float = ( ((1+dist)*10)+groundMagnetHeighSpeed)*delta
+		
+		var poffset = curve.get_closest_point( position )
+		var normal = (poffset - global_position).normalized() as Vector3
+		#rotation = normal
+		#
+		
 		t.basis.y = n
 		t.basis.x = -t.basis.z.cross(n)
 		t.basis = t.basis.orthonormalized()
