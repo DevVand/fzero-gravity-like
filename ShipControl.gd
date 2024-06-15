@@ -14,7 +14,7 @@ var dir: Vector3
 var gVelocity: Vector3
 var linearVelocity: float
 
-var lVelocity: float = 10
+var lVelocity: float = 0
 @export var friction: float = .95
 
 @export var rAcceleration: float
@@ -103,6 +103,8 @@ func offTrack():
 	velocity+=Vector3.DOWN * gravity
 	move_and_collide((velocity)*delta)
 	rotate(transform.basis.z.normalized(),rSpeed)
+	
+	rotate(transform.basis.x.normalized(), i.y *delta)
 	rSpeed*=rFriction
 	
 	pass

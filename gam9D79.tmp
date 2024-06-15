@@ -173,7 +173,7 @@ shadow_enabled = true
 directional_shadow_mode = 1
 
 [node name="StaticBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("ray")]
-transform = Transform3D(1, 3.05711e-14, 1.74846e-07, 0, 1, -1.74846e-07, -1.74846e-07, 1.74846e-07, 1, 0, -12.5393, 1.93498)
+transform = Transform3D(1, 3.05711e-14, 1.74846e-07, 0, 1, -1.74846e-07, -1.74846e-07, 1.74846e-07, 1, 0, 1.83011, 1.93498)
 input_ray_pickable = false
 script = ExtResource("2_lo1p2")
 ray = NodePath("groundCheck")
@@ -233,12 +233,14 @@ shape = SubResource("SphereShape3D_m6jww")
 [node name="CSGSphere3D" type="CSGSphere3D" parent="StaticBody3D2/CollisionShape3D"]
 rings = 30
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
-use_collision = true
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(114.221, 0, 0, 0, 114.221, 0, 0, 0, 114.221, -15.5845, 2.69959, 97.2934)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -21.3312, 278.564)
-size = Vector3(155.826, 1, 686.947)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("SphereShape3D_m6jww")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="StaticBody3D3/CollisionShape3D"]
+rings = 30
 
 [connection signal="crashed" from="StaticBody3D" to="StaticBody3D/AnimationPlayer" method="play" binds= ["crashed"]]
 [connection signal="getOffTrack" from="StaticBody3D" to="StaticBody3D/AnimationPlayer" method="play" binds= ["offTrack"]]
