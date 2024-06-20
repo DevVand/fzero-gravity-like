@@ -24,7 +24,6 @@ var rSpeed: float
 @export var gravity:float = 20
 @export var mass: float = 1
 @export var maxSpeed: float
-@export var groundMagnet: float
 @export var groundMagnetDist: float = 1
 
 @export var groundMagnetRotSpeed: float = 10
@@ -68,7 +67,7 @@ func onTrack():
 		var t: Transform3D = transform
 		var rDif: float = 1+abs(basis.y.angle_to(n) )*10
 		var lerpR: float = (rDif *groundMagnetRotSpeed)*delta
-		var lerpV: float = ( ((1+dist)*10)+groundMagnetHeighSpeed)*delta
+		var lerpV: float = ( (1+dist)**groundMagnetHeighSpeed)*delta
 		
 		var poffset = curve.get_closest_point( position )
 		var normal = (poffset - global_position).normalized() as Vector3
@@ -106,6 +105,7 @@ func offTrack():
 	
 	rotate(transform.basis.x.normalized(), i.y *delta)
 	rSpeed*=rFriction
+	
 	
 	pass
 signal crashed

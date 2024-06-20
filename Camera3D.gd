@@ -11,7 +11,7 @@ extends Camera3D
 #initial fov
 var initialFov: float = 70
 #fovChange
-var fovChange: float = .4
+@export var fovChange: float = .4
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	top_level=true
@@ -25,5 +25,5 @@ func _process(delta):
 	position = position.lerp(target.global_position + offset,lerpSpeed*delta)
 	look_at(targetView.position, targetView.basis.y)
 	#change fov based of offset distance
-	fov = initialFov + d*fovChange
+	fov = min(150, initialFov + d*fovChange)
 
