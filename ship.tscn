@@ -1,0 +1,266 @@
+[gd_scene load_steps=24 format=3 uid="uid://nkfxl826wv8y"]
+
+[ext_resource type="Script" path="res://basicMove.gd" id="1_6giha"]
+[ext_resource type="Script" path="res://utils/playAnimBySignal.gd" id="2_50bq8"]
+[ext_resource type="Script" path="res://Camera3D.gd" id="3_icaii"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wiogi"]
+radius = 0.840944
+height = 3.22163
+
+[sub_resource type="Animation" id="Animation_sewhv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ship:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ship:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ship:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_421hk"]
+resource_name = "offTrack"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ship:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(6.28319, 6.28319, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1tcjp"]
+resource_name = "crashed"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ship:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tlxtr"]
+resource_name = "getOnTrack"
+length = 0.600005
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ship:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.45),
+"transitions": PackedFloat32Array(0.517632, 1),
+"update": 0,
+"values": [Vector3(0, -0.384588, 1.19209e-07), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ship:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.45),
+"transitions": PackedFloat32Array(0.435275, 0.615572, 1),
+"update": 0,
+"values": [Vector3(0.466003, 0.776672, 0.106465), Vector3(0.25493, -0.392399, 0.636563), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_cnbef"]
+resource_name = "idle"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ship:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3ysex"]
+_data = {
+"RESET": SubResource("Animation_sewhv"),
+"air": SubResource("Animation_421hk"),
+"crashed": SubResource("Animation_1tcjp"),
+"ground": SubResource("Animation_tlxtr"),
+"idle": SubResource("Animation_cnbef")
+}
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_uwlqk"]
+length = 3.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ineh"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6d6jl"]
+material = SubResource("StandardMaterial3D_0ineh")
+size = Vector3(1, 0.5, 2)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ore5d"]
+sky_top_color = Color(1, 1, 1, 1)
+ground_bottom_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Sky" id="Sky_fe233"]
+sky_material = SubResource("ProceduralSkyMaterial_ore5d")
+
+[sub_resource type="Environment" id="Environment_y3gt8"]
+background_mode = 2
+sky = SubResource("Sky_fe233")
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_ug8jy"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_i1f3x"]
+
+[sub_resource type="Curve" id="Curve_sh7fp"]
+_data = [Vector2(0, 0), 0.0, -0.0712066, 0, 0, Vector2(0.260188, 0.66812), 0.0, 0.0, 0, 0, Vector2(1, 0.00435865), -2.78082, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_8rk80"]
+curve = SubResource("Curve_sh7fp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_p6yrk"]
+lifetime_randomness = 1.0
+emission_shape_scale = Vector3(6, 5, 5)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, -0.5, 0)
+alpha_curve = SubResource("CurveTexture_8rk80")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwv53"]
+transparency = 1
+depth_draw_mode = 1
+shading_mode = 2
+specular_mode = 2
+vertex_color_use_as_albedo = true
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_diagg"]
+material = SubResource("StandardMaterial3D_fwv53")
+size = Vector2(0.2, 0.2)
+
+[node name="ship" type="CharacterBody3D" node_paths=PackedStringArray("targetGroundPos", "groundRaycast", "animation_player")]
+input_ray_pickable = false
+script = ExtResource("1_6giha")
+acc = 120.0
+friction = 0.985
+rAcc = 1.0
+targetGroundPos = NodePath("SpringArm3D/tip/ground target")
+groundRaycast = NodePath("groundCheck")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 3.38813e-21, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_wiogi")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3ysex")
+}
+script = ExtResource("2_50bq8")
+
+[node name="groundCheck" type="RayCast3D" parent="."]
+target_position = Vector3(0, -3, 0)
+hit_back_faces = false
+
+[node name="Area3D" type="Area3D" parent="groundCheck"]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="groundCheck/Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("SeparationRayShape3D_uwlqk")
+
+[node name="ship" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_6d6jl")
+skeleton = NodePath("")
+
+[node name="cam holder" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 1.032, -4.202)
+
+[node name="Camera3D" type="Camera3D" parent="cam holder" node_paths=PackedStringArray("target", "targetView")]
+environment = SubResource("Environment_y3gt8")
+current = true
+fov = 65.0
+size = 9.0
+near = 0.005
+far = 836.67
+script = ExtResource("3_icaii")
+target = NodePath("..")
+targetView = NodePath("../..")
+lerpSpeed = 12.0
+fovChange = 10.0
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 3.38813e-21, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+visible = false
+shape = SubResource("SeparationRayShape3D_ug8jy")
+spring_length = 3.0
+
+[node name="tip" type="MeshInstance3D" parent="SpringArm3D"]
+transform = Transform3D(1, -5.68434e-14, -1.42109e-14, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)
+mesh = SubResource("SphereMesh_i1f3x")
+
+[node name="ground target" type="MeshInstance3D" parent="SpringArm3D/tip"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 9.53674e-07, -1.5)
+mesh = SubResource("SphereMesh_i1f3x")
+skeleton = NodePath("../..")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+amount = 16
+lifetime = 3.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_p6yrk")
+draw_pass_1 = SubResource("QuadMesh_diagg")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(-1, 0, 9.68575e-08, 0, 1, 0, -9.68575e-08, 0, -1, 0, 0, 0)
+spot_range = 63.0
