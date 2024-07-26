@@ -166,7 +166,7 @@ point_count = 3
 curve = SubResource("Curve_sh7fp")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_p6yrk"]
-lifetime_randomness = 1.0
+lifetime_randomness = 0.2
 emission_shape_scale = Vector3(6, 5, 5)
 emission_shape = 3
 emission_box_extents = Vector3(1, 1, 1)
@@ -236,7 +236,7 @@ script = ExtResource("3_icaii")
 target = NodePath("..")
 targetView = NodePath("../..")
 lerpSpeed = 12.0
-fovChange = 10.0
+fovChange = 0.0
 
 [node name="SpringArm3D" type="SpringArm3D" parent="."]
 transform = Transform3D(1, 0, 3.38813e-21, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -255,6 +255,7 @@ skeleton = NodePath("../..")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+visible = false
 amount = 16
 lifetime = 3.0
 randomness = 1.0

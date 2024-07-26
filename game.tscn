@@ -38,8 +38,8 @@ size = Vector3(18, 1, 16)
 material = ExtResource("2_ne3l6")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0, 62)
-size = Vector3(52, 1, 125)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0, 92.5)
+size = Vector3(52, 1, 186)
 material = ExtResource("2_ne3l6")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D"]
