@@ -1,18 +1,18 @@
 extends CharacterBody3D
 
+@export var maxSpeed: float = 50
+
+
 @export var acc: float = 150
 
 @export var grav: float = 20
+var rVel: Vector3
+@export var rAcc: Vector3 = Vector3(1,1.5,0)
+@export var rFriction: Vector3 = Vector3(.85,.7,0)
+
 var vel: Vector3
 @export var friction: float = .95
 
-@export var tAcc: float = 1.5
-var tVel: float
-@export var tFriction: float = .7
-
-@export var rAcc: float = 1.5
-var rVel: float
-@export var rFriction: float = .7
 
 @export var targetGroundPos: Node3D
 @export var groundRaycast: RayCast3D
@@ -25,6 +25,7 @@ func _physics_process(delta):
 	var i:Vector2 = Input.get_vector("right","left","reverse","acel")
 	var dir = (Vector3(i.x, 0, i.y)).normalized()
 	var part = gpu_particles_3d.process_material as ParticleProcessMaterial
+
 	
 	if dir or state == "air":
 		#part.direction = -vel.normalized()
@@ -39,11 +40,9 @@ func _physics_process(delta):
 	match state:
 		"air":
 			extForces -= Vector3.UP * grav * delta
-			rVel -= i.x * rAcc * delta
-			rotate(basis.z, rVel)
-			rVel *= rFriction
+			rVel.z -= i.x * rAcc.z * delta
+			rVel.x -= i.y * rAcc.x * delta
 			
-			#rotate(basis.x, i.y * rAcc * delta)
 			if groundRaycast.is_colliding():
 				goToGround()
 		"ground":
@@ -51,9 +50,9 @@ func _physics_process(delta):
 				if dir:
 					#vel.x += i.x * acc * delta
 					vel.z += i.y * acc * delta
-				tVel += i.x * tAcc * delta
-				rotate(basis.y, tVel)
-				tVel *= rFriction
+				rVel.y += i.x * rAcc.y * delta
+				
+				#rVel.y *= rFriction.y
 				vel.x *= friction
 				vel.z *= friction
 				var n = groundRaycast.get_collision_normal()
@@ -64,13 +63,23 @@ func _physics_process(delta):
 				position = position.lerp(targetGroundPos.global_position,.25)
 			else:
 				goToAir()
+	if Input.is_action_just_pressed("boost"):
+		vel.z = min(vel.z*2,maxSpeed*2)
+		
+	rVel *= rFriction
+	
 	velocity += Utils.RotateToBasis(vel,basis)
 	
 	velocity += extForces
+	velocity = min(velocity.length(),maxSpeed) * velocity.normalized()
+	rotate(basis.x, -rVel.x) #pitch
+	rotate(basis.y, rVel.y) #yaw	
+	rotate(basis.z, rVel.z) #roll
 	move_and_slide()
 	velocity = Vector3.ZERO
 func goToAir():
 	state="air"
+	rVel.x = rVel.x
 	animation_player.play(state)
 
 func goToGround():

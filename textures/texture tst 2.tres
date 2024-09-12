@@ -4,5 +4,8 @@
 
 [resource]
 albedo_texture = ExtResource("1_jbxbx")
+metallic = 0.26
+roughness = 0.16
+refraction_enabled = true
 uv1_scale = Vector3(0.25, 0.25, 0.25)
 uv1_triplanar = true

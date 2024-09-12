@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://nkfxl826wv8y"]
+[gd_scene load_steps=23 format=3 uid="uid://nkfxl826wv8y"]
 
 [ext_resource type="Script" path="res://basicMove.gd" id="1_6giha"]
 [ext_resource type="Script" path="res://utils/playAnimBySignal.gd" id="2_50bq8"]
@@ -143,16 +143,12 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_0ineh")
 size = Vector3(1, 0.5, 2)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ore5d"]
-sky_top_color = Color(1, 1, 1, 1)
-ground_bottom_color = Color(1, 1, 1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0vijs"]
+emission_enabled = true
+emission = Color(0, 1, 1, 1)
 
-[sub_resource type="Sky" id="Sky_fe233"]
-sky_material = SubResource("ProceduralSkyMaterial_ore5d")
-
-[sub_resource type="Environment" id="Environment_y3gt8"]
-background_mode = 2
-sky = SubResource("Sky_fe233")
+[sub_resource type="BoxMesh" id="BoxMesh_yqxyd"]
+material = SubResource("StandardMaterial3D_0vijs")
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_ug8jy"]
 
@@ -191,8 +187,8 @@ size = Vector2(0.2, 0.2)
 input_ray_pickable = false
 script = ExtResource("1_6giha")
 acc = 120.0
+grav = 110.0
 friction = 0.985
-rAcc = 1.0
 targetGroundPos = NodePath("SpringArm3D/tip/ground target")
 groundRaycast = NodePath("groundCheck")
 animation_player = NodePath("AnimationPlayer")
@@ -222,11 +218,18 @@ shape = SubResource("SeparationRayShape3D_uwlqk")
 mesh = SubResource("BoxMesh_6d6jl")
 skeleton = NodePath("")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ship"]
+transform = Transform3D(0.344222, 0, 0, 0, 0.386606, 0, 0, 0, 1, 0.569359, 0, 0.621391)
+mesh = SubResource("BoxMesh_yqxyd")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="ship"]
+transform = Transform3D(0.344222, 0, 0, 0, 0.386606, 0, 0, 0, 1, -0.592963, 0, 0.621391)
+mesh = SubResource("BoxMesh_yqxyd")
+
 [node name="cam holder" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 1.032, -4.202)
 
 [node name="Camera3D" type="Camera3D" parent="cam holder" node_paths=PackedStringArray("target", "targetView")]
-environment = SubResource("Environment_y3gt8")
 current = true
 fov = 65.0
 size = 9.0
@@ -255,7 +258,6 @@ skeleton = NodePath("../..")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
-visible = false
 amount = 16
 lifetime = 3.0
 randomness = 1.0
@@ -264,4 +266,10 @@ draw_pass_1 = SubResource("QuadMesh_diagg")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(-1, 0, 9.68575e-08, 0, 1, 0, -9.68575e-08, 0, -1, 0, 0, 0)
-spot_range = 63.0
+light_color = Color(0, 0.98632, 0.98632, 1)
+light_energy = 10.483
+light_bake_mode = 0
+spot_range = 166.258
+spot_attenuation = 0.901253
+spot_angle = 41.5664
+spot_angle_attenuation = 0.435277
