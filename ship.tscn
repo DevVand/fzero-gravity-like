@@ -1,7 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://nkfxl826wv8y"]
+[gd_scene load_steps=24 format=3 uid="uid://nkfxl826wv8y"]
 
 [ext_resource type="Script" path="res://basicMove.gd" id="1_6giha"]
 [ext_resource type="Script" path="res://utils/playAnimBySignal.gd" id="2_50bq8"]
+[ext_resource type="Script" path="res://cam rotation.gd" id="3_0ml7o"]
 [ext_resource type="Script" path="res://Camera3D.gd" id="3_icaii"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wiogi"]
@@ -188,6 +189,7 @@ input_ray_pickable = false
 script = ExtResource("1_6giha")
 acc = 120.0
 grav = 110.0
+rFriction = Vector3(0.85, 0.7, 1)
 friction = 0.985
 targetGroundPos = NodePath("SpringArm3D/tip/ground target")
 groundRaycast = NodePath("groundCheck")
@@ -226,10 +228,13 @@ mesh = SubResource("BoxMesh_yqxyd")
 transform = Transform3D(0.344222, 0, 0, 0, 0.386606, 0, 0, 0, 1, -0.592963, 0, 0.621391)
 mesh = SubResource("BoxMesh_yqxyd")
 
-[node name="cam holder" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 1.032, -4.202)
+[node name="cam arm" type="Node3D" parent="."]
+script = ExtResource("3_0ml7o")
 
-[node name="Camera3D" type="Camera3D" parent="cam holder" node_paths=PackedStringArray("target", "targetView")]
+[node name="cam holder" type="Node3D" parent="cam arm"]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 1.032, -4.202)
+
+[node name="Camera3D" type="Camera3D" parent="cam arm/cam holder" node_paths=PackedStringArray("target", "targetView")]
 current = true
 fov = 65.0
 size = 9.0
@@ -237,7 +242,7 @@ near = 0.005
 far = 836.67
 script = ExtResource("3_icaii")
 target = NodePath("..")
-targetView = NodePath("../..")
+targetView = NodePath("../../..")
 lerpSpeed = 12.0
 fovChange = 0.0
 

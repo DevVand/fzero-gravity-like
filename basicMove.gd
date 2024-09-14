@@ -6,6 +6,7 @@ extends CharacterBody3D
 @export var acc: float = 150
 
 @export var grav: float = 20
+@export var grav2: float = 20
 var rVel: Vector3
 @export var rAcc: Vector3 = Vector3(1,1.5,0)
 @export var rFriction: Vector3 = Vector3(.85,.7,0)
@@ -41,11 +42,16 @@ func _physics_process(delta):
 		"air":
 			extForces -= Vector3.UP * grav * delta
 			rVel.z -= i.x * rAcc.z * delta
+			#rVel.y += i.x * rAcc.y * delta
 			rVel.x -= i.y * rAcc.x * delta
-			
+			#vel.y *=friction
+			vel.y -= grav2 * delta
 			if groundRaycast.is_colliding():
 				goToGround()
 		"ground":
+			if Input.is_action_just_pressed("jump"):
+				vel.y = maxSpeed*.5
+				goToAir()
 			if groundRaycast.is_colliding():
 				if dir:
 					#vel.x += i.x * acc * delta
