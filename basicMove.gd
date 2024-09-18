@@ -2,11 +2,11 @@ extends CharacterBody3D
 
 @export var maxSpeed: float = 50
 
-
 @export var acc: float = 150
 
-@export var grav: float = 20
-@export var grav2: float = 20
+@export var gravDir: Vector3
+
+@export var grav: float = 30
 var rVel: Vector3
 @export var rAcc: Vector3 = Vector3(1,1.5,0)
 @export var rFriction: Vector3 = Vector3(.85,.7,0)
@@ -40,19 +40,24 @@ func _physics_process(delta):
 	
 	match state:
 		"air":
-			extForces -= Vector3.UP * grav * delta
+			#extForces -= Vector3.UP * grav * delta
+			extForces += gravDir * grav * delta
 			rVel.z -= i.x * rAcc.z * delta
 			#rVel.y += i.x * rAcc.y * delta
 			rVel.x -= i.y * rAcc.x * delta
 			#vel.y *=friction
-			vel.y -= grav2 * delta
+			#vel.y -= grav * delta
+			
+			
 			if groundRaycast.is_colliding():
 				goToGround()
 		"ground":
 			if Input.is_action_just_pressed("jump"):
+				
 				vel.y = maxSpeed*.5
 				goToAir()
 			if groundRaycast.is_colliding():
+				
 				if dir:
 					#vel.x += i.x * acc * delta
 					vel.z += i.y * acc * delta
@@ -71,24 +76,32 @@ func _physics_process(delta):
 				goToAir()
 	if Input.is_action_just_pressed("boost"):
 		vel.z = min(vel.z*2,maxSpeed*2)
-		
+	
 	rVel *= rFriction
 	
-	velocity += Utils.RotateToBasis(vel,basis)
-	
-	velocity += extForces
+	velocity = Utils.RotateToBasis(vel,basis)
+	velocity +=  extForces 
 	velocity = min(velocity.length(),maxSpeed) * velocity.normalized()
+
 	rotate(basis.x, -rVel.x) #pitch
-	rotate(basis.y, rVel.y) #yaw	
+	rotate(basis.y, rVel.y) #yaw
 	rotate(basis.z, rVel.z) #roll
 	move_and_slide()
-	velocity = Vector3.ZERO
+	
 func goToAir():
+	
+	gravDir = Utils.RotateToBasis(Vector3.DOWN,basis).normalized()
+	extForces = Utils.RotateToBasis(vel,basis)
+	vel = Vector3.ZERO
 	state="air"
 	rVel.x = rVel.x
 	animation_player.play(state)
 
 func goToGround():
+	
+	vel = extForces
+	extForces = Vector3.ZERO
+	
 	extForces = Vector3.ZERO
 	vel.y=0
 	var n = groundRaycast.get_collision_normal()

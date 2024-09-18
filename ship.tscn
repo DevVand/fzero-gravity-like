@@ -188,7 +188,6 @@ size = Vector2(0.2, 0.2)
 input_ray_pickable = false
 script = ExtResource("1_6giha")
 acc = 120.0
-grav = 110.0
 rFriction = Vector3(0.85, 0.7, 1)
 friction = 0.985
 targetGroundPos = NodePath("SpringArm3D/tip/ground target")
